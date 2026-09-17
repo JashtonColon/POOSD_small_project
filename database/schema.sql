@@ -25,4 +25,3 @@ CREATE TABLE Contacts(
     FOREIGN KEY (UserID) REFERENCES Users(ID)
 
 )ENGINE = InnoDB;
-
