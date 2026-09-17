@@ -11,7 +11,7 @@ CREATE TABLE Users(
     LastName VARCHAR(50) NOT NULL,
     Username VARCHAR(50) NOT NULL UNIQUE,
     RegDate DATE NOT NULL DEFAULT (CURRENT_DATE()), -- Default value is the current time when they register
-    Password VARCHAR(50) NOT NULL DEFAULT ''
+    Password VARCHAR(50) NOT NULL
 )ENGINE = InnoDB;
 
 -- Now lets create the contacts table
