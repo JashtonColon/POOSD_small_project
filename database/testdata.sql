@@ -1,5 +1,5 @@
 -- Development test data for fresh, empty tables only
---Test password for all users is "TestPassword123!"
+-- Test password for all users is "TestPassword123!"
 USE COP4331;
 -- Inserting some users
 INSERT INTO Users(FirstName, LastName, Username, Password)
@@ -28,14 +28,14 @@ SELECT 'Sarah', 'Jobs', '(941)456-0010', 'sarah.jobs@email.com', ID
 FROM Users
 WHERE Username = 'myusername';
 
---This contact belongs to Jane
+-- This contact belongs to Jane
 
 INSERT INTO Contacts(FirstName, LastName, Phone, Email, UserID)
 SELECT 'Jim', 'Pop', '(123)456-6767', 'jpop@email.com', ID
 FROM Users
 WHERE Username = 'janedoe1';
 
---These contacts belong to Jimmy
+-- These contacts belong to Jimmy
 
 INSERT INTO Contacts(FirstName, LastName, Phone, Email, UserID)
 SELECT 'Tim', 'Kneearaise', '(123)456-3261', 'traise@email.com', ID
