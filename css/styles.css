@@ -1,0 +1,211 @@
+/*General Page Styling*/
+
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+
+    background-color: grey;
+}
+
+main {
+    width: 80%;
+    max-width: 900px;
+    margin: 40px auto;
+}
+
+
+/*Headers*/
+
+h1 {
+    text-align: center;
+    font-size: 38px;
+    margin-bottom: 10px;
+
+    border: 5px solid gold;
+    padding: 15px;
+    color: gold;
+    background-color: black;
+    border-radius: 8px;
+}
+
+h2 {
+    text-align: center;
+    font-size: 28px;
+    margin-bottom: 25px;
+
+    padding: 5px;
+    color: black;
+    
+
+    display: block;
+    width: fit-content;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/*Search*/
+
+#search-section {
+    margin-bottom: 30px;
+    background-color: #FFFBE8;
+    padding: 15px;
+    margin-bottom: 30px;
+    border-radius: 8px;
+
+    border: 5px solid gold;
+    text-align: center;
+}
+
+#search-input {
+    width: 60%;
+    padding: 10px;
+    font-size: 16px;
+    box-sizing: border-box;
+}
+
+#search-button {
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    background-color: black;
+    color: gold;
+    border: 3px solid gold;
+    border-radius: 8px;
+    
+}
+
+/*Add Contact*/
+
+#add-contact-section {
+    background-color: #FFFBE8;
+    padding: 15px;
+    margin-bottom: 30px;
+    border-radius: 8px;
+
+    border: 5px solid gold;
+}
+
+#add-contact-form div {
+    margin-bottom: 15px;
+}
+
+#add-contact-form label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+#add-contact-form input {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    box-sizing: border-box;
+}
+
+#add-contact-form button {
+    background-color: black;
+    color: gold;
+    border: 2px solid gold;
+    
+    margin-top: 5px;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 8px;
+}
+
+/*Contact Cards*/
+
+#contacts-section {
+    margin-bottom: 30px;
+    background-color: #FFFBE8;
+    padding: 15px;
+    margin-bottom: 30px;
+    border-radius: 8px;
+
+    border: 5px solid gold;
+}
+
+#contacts-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.contact-card {
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    border: 1px solid black;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.contact-info h3 {
+    margin-top: 0;
+    margin-bottom: 10px;
+}
+
+.contact-info p {
+    margin: 5px 0;
+}
+
+.contact-actions button {
+    background-color: black;
+    border: 2px solid gold;
+    color: gold;
+    border-radius: 5px;
+    padding: 8px 15px;
+    margin-left: 5px;
+    font-size: 14px;
+    cursor: pointer;
+    border-radius: 8px;
+}
+
+/*For Index.html Sign In*/
+
+
+#form-signin .field {
+    margin-bottom: 20px;
+}
+
+#form-signin label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+    text-align: center;
+    font-size: 26px;
+}
+
+#form-signin input {
+    width: 60%;
+    padding: 10px;
+    font-size: 16px;
+    box-sizing: border-box;
+}
+
+#form-signin button {
+    background-color: black;
+    color: gold;
+    border: 2px solid gold;
+    border-radius: 8px;
+
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+#form-signin {
+    background-color: #FFFBE8;
+    padding: 30px;
+    border: 5px solid gold;
+    border-radius: 8px;
+
+    width: 70%;
+    margin: 0 auto;
+    box-sizing: border-box;
+
+    text-align: center;
+}
