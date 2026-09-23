@@ -29,7 +29,8 @@ signinStatus.textContent = "Signing in... ";
 try{
     const user = await apiPost('login', { login: login, password: password });
 
-    signinStatus.textContent = `Welcome, ${user.firstName}!`;
+        localStorage.setItem('user', JSON.stringify(user));
+        window.location.href = 'contacts.html';
 } catch (err){
     signinStatus.textContent = err.message;
 }
