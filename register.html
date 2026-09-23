@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Create Account - Knight Contact Manager</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+    <main>
+
+        <h1>Knight Contact Manager</h1>
+        <h2>Create Account</h2>
+
+        <form id="form-register" novalidate>
+
+            <div class="field">
+                <label for="reg-first">First Name</label>
+                <input id="reg-first" type="text" autocomplete="given-name" required>
+            </div>
+
+            <div class="field">
+                <label for="reg-last">Last Name</label>
+                <input id="reg-last" type="text" autocomplete="family-name" required>
+            </div>
+
+            <div class="field">
+                <label for="reg-login">Username</label>
+                <input id="reg-login" type="text" autocomplete="username" required>
+            </div>
+
+            <div class="field">
+                <label for="reg-password">Password</label>
+                <input id="reg-password" type="password" autocomplete="new-password" required>
+            </div>
+
+            <button type="submit">Create Account</button>
+
+            <p id="register-status" role="status" aria-live="polite"></p>
+
+        </form>
+        <p>Already have an account? <a href="index.html">Sign in</a></p>
+    </main>
+
+    <script src="js/api.js"></script>
+    <script src="js/register.js"></script>
+
+</body>
+
+
+</html>
