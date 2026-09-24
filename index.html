@@ -6,16 +6,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <title>Sign In - Knight Contacts Manager</title>
-    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="styles.css">
  
 </head>
 
 <body>
     <main>
     <h1>Knights Contact Manager</h1>
-    <h2>Sign In</h2>
+    
     <form id = "form-signin" novalidate>
-
     <div class="field">
         <label for="signin-login">Username</label>
         <input id="signin-login" type="text" autocomplete="username" required>
@@ -27,11 +26,13 @@
     </div>
 
     <button type="submit">Sign In</button>
+    <button type="button" id="register-button">
+        Create an Account
+    </button>
 
     <p id="signin-status" role="status" aria-live="polite"></p>
 
     </form>
-    <p>Don't have an account? <a href="register.html">Create One</a></p>
     </main>
 
     <script src="js/api.js"></script>
