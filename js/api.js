@@ -22,6 +22,7 @@ async function apiPost(endpoint, payload) {
         throw new Error(data.error);
     }
 
+
     return data;
     
 }
@@ -37,6 +38,13 @@ async function fakeApi(endpoint, payload) {
             return { id: 1, firstName: "Mehmood", lastName: "Khan", error: ""};
         }
         throw new Error('Username or password is incorrect.');
+    }
+
+    if(endpoint==='register'){
+        if(payload.login==='Knight'){
+            throw new error("Username already taken.");
+        }
+        return{id : 2, firstName=payload.firstName, lastName=payload.lastName, error=""};
     }
 
     throw new Error("Fake API doesn't know the endpoint " + endpoint);
