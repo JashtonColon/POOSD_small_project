@@ -1,5 +1,5 @@
 const registerForm = document.getElementById('form-register');
-const registerStatus = document.getElementById('form-status');
+const registerStatus = document.getElementById('register-status');
 
 registerForm.addEventListener('submit', async function (event) {
     event.preventDefault();
@@ -28,13 +28,13 @@ registerForm.addEventListener('submit', async function (event) {
         const user = await apiPost('register', {
             firstName: firstName,
             lastName: lastName,
-            login: login;
+            login: login,
             password: password
-        })
+        });
 
         localStorage.setItem('user', JSON.stringify(user));
         window.location.href= 'contacts.html';
     }catch(err){
         registerStatus.textContent = err.message;
     }
-})
+});

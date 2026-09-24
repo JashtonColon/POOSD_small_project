@@ -4,12 +4,12 @@ const signinStatus = document.getElementById("signin-status");
 
 signinForm.addEventListener("submit", async function(event){
     event.preventDefault();
-    signinStatus.textContent = 'Form Submitted';
+    
 
     const login = document.getElementById("signin-login").value.trim();
     const password = document.getElementById("signin-password").value;
 
-    signinStatus.textContent = `Username: ${login}, Password: ${password}`;
+   
 
 
     signinStatus.textContent = "";

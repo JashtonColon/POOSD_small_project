@@ -44,7 +44,7 @@ async function fakeApi(endpoint, payload) {
         if(payload.login==='Knight'){
             throw new error("Username already taken.");
         }
-        return{id : 2, firstName=payload.firstName, lastName=payload.lastName, error=""};
+        return{id : 2, firstName: payload.firstName, lastName: payload.lastName, error: ""};
     }
 
     throw new Error("Fake API doesn't know the endpoint " + endpoint);
