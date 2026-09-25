@@ -17,7 +17,7 @@ switch ($method) {
 }
 
 function edit($conn, $in, $userId){
-    $fields = ['contactID', 'firstName', 'lastName', 'phone', 'email'];
+    $fields = ['contactId', 'firstName', 'lastName', 'phone', 'email'];
     $in = requireFields($in, $fields);
 
     $contactId = (int)$in['contactId'];
@@ -53,8 +53,8 @@ function edit($conn, $in, $userId){
             $in['lastName'],
             $in['phone'],
             $in['email'],
-            $contactID,
-            $userID
+            $contactId,
+            $userId
         );
 
         //execute query
@@ -68,14 +68,16 @@ function edit($conn, $in, $userId){
                 WHERE ID = ? AND UserID = ?
                 "
             );
-        }
 
-        $check->bind_param("ii", $contactID, $userID);
-        $check->execute();
+            $check->bind_param("ii", $contactId, $userId);
+            $check->execute();
 
-        //if this doesn't return a row, then the contact we are trying to update does not exist.
-        if(!$check->get_result()->fetch_assoc()){
-            sendJson(["error" => "Contact not found."], 404);
+            //if this doesn't return a row, then the contact we are trying to update does not exist.
+            if(!$check->get_result()->fetch_assoc()){
+                sendJson(["error" => "Contact not found."], 404);
+            }
+
+
         }
     } catch(mysqli_sql_exception $e){
         sendJson(["error" => "Could not edit contact."], 500);
@@ -83,7 +85,7 @@ function edit($conn, $in, $userId){
 
     //return the edited contact as a JSON
     sendJson([
-        "id" => $contactID,
+        "id" => $contactId,
         "firstName" => $in['firstName'],
         "lastName" => $in['lastName'],
         "phone" => $in['phone'],
