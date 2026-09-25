@@ -7,7 +7,7 @@ $in = getInput();
 $userId = requireUserId($in);
  
 switch ($method) {
-    case 'POST': create($conn, $in, $userId); break;
+    case 'POST': createContact($conn, $in, $userId); break;
     case 'GET': search($conn, $in, $userId); break;
     case 'PUT': edit($conn, $in, $userId); break;
     case 'DELETE': break;
