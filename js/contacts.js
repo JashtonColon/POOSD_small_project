@@ -54,7 +54,19 @@ function showContacts(contacts) {
         email.textContent = 'Email: ' + contact.email;
 
         info.append(name, phone, email);
-        card.append(info);
+                const actions = document.createElement('div');
+        actions.className = 'contact-actions';
+
+        const deleteButton = document.createElement('button');
+        deleteButton.type = 'button';
+        deleteButton.textContent = 'Delete';
+        deleteButton.setAttribute('aria-label', 'Delete ' + contact.firstName + ' ' + contact.lastName);
+        deleteButton.addEventListener('click', function () {
+            deleteContact(contact);
+        });
+
+        actions.append(deleteButton);
+        card.append(info, actions);
         contactsList.append(card);
     });
 }
@@ -105,3 +117,20 @@ addForm.addEventListener('submit', async function (event) {
         addStatus.textContent = err.message;
     }
 });
+
+
+async function deleteContact(contact) {
+    const name = contact.firstName + ' ' + contact.lastName;
+
+    if (!confirm(`Delete ${name}? This cannot be undone.`)) {
+        return;
+    }
+
+    try {
+        await apiRequest('DELETE', 'contacts', { userId: user.id, contactId: contact.id });
+        await loadContacts();
+        contactStatus.textContent = `${name} deleted.`;
+    } catch (err) {
+        contactStatus.textContent = err.message;
+    }
+}

@@ -82,10 +82,19 @@ async function fakeApi(method, endpoint, payload) {
             dateCreated: new Date().toISOString().slice(0, 10)
         };
 
+           
+
         nextContactId = nextContactId + 1;
         fakeContacts.push(contact);
 
         return { id: contact.id, firstName: contact.firstName, lastName: contact.lastName };
+    }
+
+     if (endpoint === 'contacts' && method === 'DELETE') {
+        fakeContacts = fakeContacts.filter(function (c) {
+            return !(c.id === Number(payload.contactId) && c.userId === Number(payload.userId));
+        });
+        return {};
     }
 
     throw new Error("Fake API doesn't know the endpoint " + endpoint);
