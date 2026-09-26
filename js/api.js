@@ -42,7 +42,7 @@ async function fakeApi(endpoint, payload) {
 
     if(endpoint==='register'){
         if(payload.username==='Knight'){
-            throw new error("Username already taken.");
+            throw new Error("Username already taken.");
         }
         return{id : 2, firstName: payload.firstName, lastName: payload.lastName, error: ""};
     }
