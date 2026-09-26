@@ -28,7 +28,7 @@ registerForm.addEventListener('submit', async function (event) {
         const user = await apiPost('register', {
             firstName: firstName,
             lastName: lastName,
-            login: login,
+            username: login,
             password: password
         });
 

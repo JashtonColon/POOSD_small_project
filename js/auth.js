@@ -27,8 +27,7 @@ if(!password){
 signinStatus.textContent = "Signing in... ";
 
 try{
-    const user = await apiPost('login', { login: login, password: password });
-
+        const user = await apiPost('login', { username: login, password: password });
         localStorage.setItem('user', JSON.stringify(user));
         window.location.href = 'contacts.html';
 } catch (err){
