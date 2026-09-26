@@ -8,16 +8,23 @@ $userId = requireUserId($in);
 
 switch ($method) {
     case 'POST': createContact($conn, $in, $userId); break;
+<<<<<<< HEAD
     case 'GET': searchContact($conn, $in, $userId); break;
     case 'PUT': editContact($conn, $in, $userId); break;
     case 'DELETE': break;
+=======
+    case 'GET': search($conn, $in, $userId); break;
+    case 'PUT': edit($conn, $in, $userId); break;
+    case 'DELETE': deleteContact($conn, $in, $userId); break;
+>>>>>>> origin/api
     default:
         header('Allow: GET, POST, PUT, DELETE');
         sendJson(["error" => "Method not allowed"], 405);
 }
 
 function createContact($conn, $in, $userId) {
-    $contact = requireFields($in, ['firstName', 'lastName', 'phone', 'email']);
+    $fields = ['firstName', 'lastName', 'phone', 'email'];
+    $contact = requireFields($in, $fields);
 
     if (strlen($contact['firstName']) > 50 ||
         strlen($contact['lastName']) > 50 ||
@@ -128,8 +135,13 @@ function edit($conn, $in, $userId){
         "phone" => $in['phone'],
         "email" => $in['email']
     ]);
+}
 
+function deleteContact($conn, $in, $userId) {
+    $fields = ['contactId'];
+    $in = requireFields($in, $fields);
 
+<<<<<<< HEAD
 }
 
 function searchContact($conn, $in, $userId){
@@ -177,4 +189,28 @@ function searchContact($conn, $in, $userId){
         sendJson(["error" => "Could not search contacts"], 500);
     }
     sendJson(["results" => $results]);
+=======
+    $contactId = (int)$in['contactId'];
+
+    if ($contactId <= 0) {
+        sendJson(["error" => "A valid contactID is required"], 400);
+    }
+
+    try {
+        $stmt = $conn->prepare(
+            "DELETE FROM Contacts WHERE ID = ? AND UserID = ?"
+        );
+
+        $stmt->bind_param("ii", $contactId, $userId);
+        $stmt->execute();
+    } catch (mysqli_sql_exception $e) {
+        sendJson(["error" => "Could not delete contact"], 500);
+    }
+
+    if ($stmt->affected_rows === 0) { //None deleted == Contact ID not found
+        sendJson(["error" => "Contact not found"], 404);
+    }
+
+    sendJson(["contactId" => $contactId]);
+>>>>>>> origin/api
 }
