@@ -1,3 +1,7 @@
+<<<<<<< HEAD
 .vscode/
 .DS_Store
 Thumbs.db
+=======
+*.config.*
+>>>>>>> origin/temp_main
