@@ -26,17 +26,38 @@
 
             <h2>Search Contacts</h2>
 
-            <input
-                id="search-input"
-                type="text"
-                placeholder="Search by name..."
-            >
-
-            <button type="button" id="search-button">
-                Search
-            </button>
+                        <form id="search-form" role="search">
+                <input id="search-input" type="search" placeholder="Search by name..." aria-label="Search contacts">
+                <button type="submit" id="search-button">Search</button>
+            </form>
 
         </section>
+
+         <!-- Contact List -->
+        <section id="contacts-section">
+
+            <h2>Contacts</h2>
+
+	    <div id="contacts-list">
+
+        	<div class="contact-card">
+
+        	    <div class="contact-info">
+            	        <h3>John Smith</h3>
+            	        <p>Phone: 407-555-1234</p>
+            	        <p>Email: john@example.com</p>
+            	    </div>
+
+        	    <div class="contact-actions">
+                        <button type="button">Edit</button>
+                        <button type="button">Delete</button>
+        	    </div>
+
+    	        </div>
+
+	    </div>
+        </section>
+
 
 
         <!-- Add Contact -->
@@ -89,31 +110,7 @@
         </section>
 
 
-        <!-- Contact List -->
-        <section id="contacts-section">
-
-            <h2>Contacts</h2>
-
-	    <div id="contacts-list">
-
-        	<div class="contact-card">
-
-        	    <div class="contact-info">
-            	        <h3>John Smith</h3>
-            	        <p>Phone: 407-555-1234</p>
-            	        <p>Email: john@example.com</p>
-            	    </div>
-
-        	    <div class="contact-actions">
-                        <button type="button">Edit</button>
-                        <button type="button">Delete</button>
-        	    </div>
-
-    	        </div>
-
-	    </div>
-        </section>
-
+       
 
         <!-- Status messages -->
         <p id="contact-status" role="status" aria-live="polite"></p>

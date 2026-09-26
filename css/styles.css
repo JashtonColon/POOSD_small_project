@@ -1,10 +1,21 @@
 /*General Page Styling*/
 
+
+:root {
+    --black: #111111;
+    --gold: #FFC904;
+    --cream: #FFFBE8;
+    --page: #EDEBE6;
+    --text: #1A1A1A;
+    --border: #D9D3C3;
+    --radius: 12px;
+}
+
 body {
     margin: 0;
-    font-family: Arial, sans-serif;
-
-    background-color: grey;
+    font-family: 'Outfit', system-ui, sans-serif;
+    background-color: #1a1a1a;
+    color: var(--cream);
 }
 
 main {
@@ -21,11 +32,12 @@ h1 {
     font-size: 38px;
     margin-bottom: 10px;
 
-    border: 5px solid gold;
+    border: 5px solid var(--gold);
     padding: 15px;
-    color: gold;
+    color: var(--gold);
     background-color: black;
-    border-radius: 8px;
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
 }
 
 h2 {
@@ -52,13 +64,13 @@ h2 {
     margin-bottom: 30px;
     border-radius: 8px;
 
-    border: 5px solid gold;
+    border: 5px solid var(--gold);
     text-align: center;
 }
 
 #search-input {
     width: 60%;
-    padding: 10px;
+    padding: 12px;
     font-size: 16px;
     box-sizing: border-box;
 }
@@ -68,8 +80,8 @@ h2 {
     font-size: 16px;
     cursor: pointer;
     background-color: black;
-    color: gold;
-    border: 3px solid gold;
+    color: var(--gold);
+    border: 3px solid var(--gold);
     border-radius: 8px;
     
 }
@@ -82,7 +94,7 @@ h2 {
     margin-bottom: 30px;
     border-radius: 8px;
 
-    border: 5px solid gold;
+    border: 5px solid var(--gold);
 }
 
 #add-contact-form div {
@@ -104,8 +116,8 @@ h2 {
 
 #add-contact-form button {
     background-color: black;
-    color: gold;
-    border: 2px solid gold;
+    color: var(--gold);
+    border: 2px solid var(--gold);
     
     margin-top: 5px;
     padding: 10px 20px;
@@ -123,7 +135,7 @@ h2 {
     margin-bottom: 30px;
     border-radius: 8px;
 
-    border: 5px solid gold;
+    border: 5px solid var(--gold);
 }
 
 #contacts-list {
@@ -154,8 +166,8 @@ h2 {
 
 .contact-actions button {
     background-color: black;
-    border: 2px solid gold;
-    color: gold;
+    border: 2px solid var(--gold);
+    color: var(--gold);
     border-radius: 5px;
     padding: 8px 15px;
     margin-left: 5px;
@@ -188,8 +200,8 @@ h2 {
 
 #form-signin button {
     background-color: black;
-    color: gold;
-    border: 2px solid gold;
+    color: var(--gold);
+    border: 2px solid var(--gold);
     border-radius: 8px;
 
     padding: 10px 20px;
@@ -200,7 +212,7 @@ h2 {
 #form-signin {
     background-color: #FFFBE8;
     padding: 30px;
-    border: 5px solid gold;
+    border: 5px solid var(--gold);
     border-radius: 8px;
 
     width: 70%;
@@ -215,7 +227,7 @@ h2 {
 #form-register {
     background-color: #FFFBE8;
     padding: 30px;
-    border: 5px solid gold;
+    border: 5px solid var(--gold);
     border-radius: 8px;
 
     width: 70%;
@@ -246,8 +258,8 @@ h2 {
 
 #form-register button {
     background-color: black;
-    color: gold;
-    border: 2px solid gold;
+    color: var(--gold);
+    border: 2px solid var(--gold);
     border-radius: 8px;
 
     padding: 10px 20px;
@@ -255,10 +267,11 @@ h2 {
     cursor: pointer;
 }
 
-#form-register + p {
+#form-register + p,
+#form-signin + p {
     background-color: #FFFBE8;
     padding: 15px;
-    border: 5px solid gold;
+    border: 5px solid var(--gold);
     border-radius: 8px;
 
     width: 70%;
@@ -268,16 +281,54 @@ h2 {
     text-align: center;
 }
 
-#form-register + p a {
+#form-register + p a,
+#form-signin + p a  {
     display: inline-block;
 
     background-color: black;
-    color: gold;
-    border: 2px solid gold;
+    color: var(--gold);
+    border: 2px solid var(--gold);
     border-radius: 8px;
 
     padding: 8px 15px;
     margin-left: 5px;
 
     text-decoration: none;
+}
+
+/* Modern card look */
+#search-section,
+#add-contact-section,
+#contacts-section,
+#form-signin,
+#form-register,
+#form-signin + p,
+#form-register + p {
+    border: 1px solid var(--border);
+    border-top: 4px solid var(--gold);
+    border-radius: var(--radius);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+    color: var(--text);
+}
+
+/* Signed-in bar */
+.user-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 10px 0 20px;
+}
+
+.user-bar p {
+    margin: 0;
+}
+
+#signout-button {
+    background-color: transparent;
+    color: var(--gold);
+    border: 2px solid var(--gold);
+    border-radius: 8px;
+    padding: 8px 16px;
+    font-size: 15px;
+    cursor: pointer;
 }

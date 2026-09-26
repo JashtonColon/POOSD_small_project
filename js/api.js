@@ -34,6 +34,14 @@ async function apiPost(endpoint, payload) {
 
 /*                        Temporary data until real API works               */
 
+let fakeContacts = [
+    { id: 1, userId: 1, firstName: 'John',   lastName: 'Smith', phone: '(123) 456-7890', email: 'jsmith@email.com',       dateCreated: '2026-09-20' },
+    { id: 2, userId: 1, firstName: 'Jordan', lastName: 'Jones', phone: '(941) 456-7890', email: 'jordan.jones@email.com', dateCreated: '2026-09-21' },
+    { id: 3, userId: 1, firstName: 'Sarah',  lastName: 'Jobs',  phone: '(941) 456-0010', email: 'sarah.jobs@email.com',   dateCreated: '2026-09-22' },
+    { id: 4, userId: 2, firstName: 'Jim',    lastName: 'Pop',   phone: '(123) 456-6767', email: 'jpop@email.com',         dateCreated: '2026-09-23' }
+];
+let nextContactId = 5;
+
 async function fakeApi(method, endpoint, payload) {
 
     await new Promise(function (resolve) {setTimeout(resolve, 400);});
@@ -51,7 +59,17 @@ async function fakeApi(method, endpoint, payload) {
         }
         return{id : 2, firstName: payload.firstName, lastName: payload.lastName, error: ""};
     }
+        if (endpoint === 'contacts' && method === 'GET') {
+        const term = (payload.search || '').toLowerCase();
 
+        const results = fakeContacts.filter(function (c) {
+            return c.userId === Number(payload.userId) &&
+                (c.firstName.toLowerCase().includes(term) ||
+                 c.lastName.toLowerCase().includes(term));
+        });
+
+        return { results: results };
+    }
     throw new Error("Fake API doesn't know the endpoint " + endpoint);
     
 }
