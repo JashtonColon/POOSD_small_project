@@ -67,3 +67,41 @@ searchForm.addEventListener('submit', function (event) {
 if (user) {
     loadContacts();
 }
+
+
+const addForm = document.getElementById('add-contact-form');
+const addStatus = document.getElementById('add-status');
+
+addForm.addEventListener('submit', async function (event) {
+    event.preventDefault();
+
+    const firstName = document.getElementById('contact-first-name').value.trim();
+    const lastName = document.getElementById('contact-last-name').value.trim();
+    const phone = document.getElementById('contact-phone').value.trim();
+    const email = document.getElementById('contact-email').value.trim();
+
+    addStatus.textContent = '';
+
+    if (!firstName || !lastName || !phone || !email) {
+        addStatus.textContent = 'Please fill in every field.';
+        return;
+    }
+
+    addStatus.textContent = 'Adding...';
+
+    try {
+        await apiRequest('POST', 'contacts', {
+            userId: user.id,
+            firstName: firstName,
+            lastName: lastName,
+            phone: phone,
+            email: email
+        });
+
+        addStatus.textContent = `${firstName} ${lastName} added.`;
+        addForm.reset();
+        loadContacts();
+    } catch (err) {
+        addStatus.textContent = err.message;
+    }
+});

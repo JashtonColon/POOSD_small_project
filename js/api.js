@@ -70,6 +70,24 @@ async function fakeApi(method, endpoint, payload) {
 
         return { results: results };
     }
+
+        if (endpoint === 'contacts' && method === 'POST') {
+        const contact = {
+            id: nextContactId,
+            userId: Number(payload.userId),
+            firstName: payload.firstName,
+            lastName: payload.lastName,
+            phone: payload.phone,
+            email: payload.email,
+            dateCreated: new Date().toISOString().slice(0, 10)
+        };
+
+        nextContactId = nextContactId + 1;
+        fakeContacts.push(contact);
+
+        return { id: contact.id, firstName: contact.firstName, lastName: contact.lastName };
+    }
+
     throw new Error("Fake API doesn't know the endpoint " + endpoint);
     
 }
