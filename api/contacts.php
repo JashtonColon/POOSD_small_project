@@ -135,7 +135,7 @@ function edit($conn, $in, $userId){
 function searchContact($conn, $in, $userId){
     //get and clean input
     $search = trim((string)($in['search'] ?? ""));
-    $pattern = "%" . $search . "%"; //%input% -> if string is "jo" it can return something like "john"
+    $pattern = "%" . addcslashes($search, '%_//') . "%"; //%input% -> if string is "jo" it can return something like "john"
 
     try{ //query
         $stmt = $conn->prepare(
@@ -171,9 +171,10 @@ function searchContact($conn, $in, $userId){
             ];
         }
 
-        sendJson(["results" => $results]);
+        
 
     } catch(mysqli_sql_exception $e){
         sendJson(["error" => "Could not search contacts"], 500);
     }
+    sendJson(["results" => $results]);
 }
