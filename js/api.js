@@ -2,39 +2,44 @@ const API_BASE = '/LAMPAPI';
 
 const USE_FAKE_DATA = true;
 
-async function apiPost(endpoint, payload) {
+async function apiRequest(method, endpoint, payload) {
 
-    if(USE_FAKE_DATA){
-        return fakeApi(endpoint, payload);
-       }
+    if (USE_FAKE_DATA) {
+        return fakeApi(method, endpoint, payload);
+    }
 
-    const url = `${API_BASE}/${endpoint}.php`;
+    let url = `${API_BASE}/${endpoint}.php`;
+    const options = { method: method, headers: {} };
 
-    const response = await fetch(url, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload)
-    });
+    if (method === 'GET' || method === 'DELETE') {
+        url += '?' + new URLSearchParams(payload).toString();
+    } else {
+        options.headers['Content-Type'] = 'application/json';
+        options.body = JSON.stringify(payload);
+    }
 
+    const response = await fetch(url, options);
     const data = await response.json();
 
-    if(data.error){
+    if (data.error) {
         throw new Error(data.error);
     }
 
-
     return data;
-    
+}
+
+async function apiPost(endpoint, payload) {
+    return apiRequest('POST', endpoint, payload);
 }
 
 /*                        Temporary data until real API works               */
 
-async function fakeApi(endpoint, payload) {
+async function fakeApi(method, endpoint, payload) {
 
     await new Promise(function (resolve) {setTimeout(resolve, 400);});
 
     if(endpoint==='login'){
-        if(payload.login==="Knight" && payload.password === "Test1234"){
+        if(payload.username==="Knight" && payload.password === "Test1234"){
             return { id: 1, firstName: "Mehmood", lastName: "Khan", error: ""};
         }
         throw new Error('Username or password is incorrect.');
