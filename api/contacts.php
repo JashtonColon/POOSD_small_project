@@ -8,8 +8,8 @@ $userId = requireUserId($in);
 
 switch ($method) {
     case 'POST': createContact($conn, $in, $userId); break;
-    case 'GET': search($conn, $in, $userId); break;
-    case 'PUT': edit($conn, $in, $userId); break;
+    case 'GET': searchContact($conn, $in, $userId); break;
+    case 'PUT': editContact($conn, $in, $userId); break;
     case 'DELETE': deleteContact($conn, $in, $userId); break;
     default:
         header('Allow: GET, POST, PUT, DELETE');
@@ -54,7 +54,7 @@ function createContact($conn, $in, $userId) {
     ], 201);
 }
 
-function edit($conn, $in, $userId){
+function editContact($conn, $in, $userId){
     $fields = ['contactId', 'firstName', 'lastName', 'phone', 'email'];
     $in = requireFields($in, $fields);
 
@@ -158,3 +158,51 @@ function deleteContact($conn, $in, $userId) {
 
     sendJson(["contactId" => $contactId]);
 }
+
+function searchContact($conn, $in, $userId){
+    //get and clean input
+    $search = trim((string)($in['search'] ?? ""));
+    $pattern = "%" . addcslashes($search, '%_\\') . "%"; //%input% -> if string is "jo" it can return something like "john"
+
+    try{ //query
+        $stmt = $conn->prepare(
+            "SELECT ID, FirstName, LastName, Phone, Email, DateCreated
+            FROM Contacts
+            WHERE UserID = ? AND (FirstName LIKE ? OR LastName LIKE ?)
+            ORDER BY LastName, FirstName
+            "
+        );
+
+        $stmt->bind_param( //fill in query values
+            "iss",
+            $userId,
+            $pattern,
+            $pattern
+        );
+
+        //execute query
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        $results = [];
+
+        //prepare our results array that will we send over
+        while($row = $result->fetch_assoc()){
+            $results[] = [
+                "id" => (int)$row["ID"],
+                "firstName" => $row["FirstName"],
+                "lastName" => $row["LastName"],
+                "phone" => $row["Phone"],
+                "email" => $row["Email"],
+                "dateCreated" => $row["DateCreated"]
+            ];
+        }
+
+        
+
+    } catch(mysqli_sql_exception $e){
+        sendJson(["error" => "Could not search contacts"], 500);
+    }
+    sendJson(["results" => $results]);
+}
+
