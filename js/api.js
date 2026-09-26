@@ -1,5 +1,4 @@
-const API_BASE = '/LAMPAPI';
-
+const API_BASE = '/api';
 const USE_FAKE_DATA = true;
 
 async function apiRequest(method, endpoint, payload) {
@@ -96,7 +95,22 @@ async function fakeApi(method, endpoint, payload) {
         });
         return {};
     }
+        if (endpoint === 'contacts' && method === 'PUT') {
+        const contact = fakeContacts.find(function (c) {
+            return c.id === Number(payload.contactId) && c.userId === Number(payload.userId);
+        });
 
+        if (!contact) {
+            throw new Error('Contact not found.');
+        }
+
+        contact.firstName = payload.firstName;
+        contact.lastName = payload.lastName;
+        contact.phone = payload.phone;
+        contact.email = payload.email;
+
+        return { id: contact.id, firstName: contact.firstName, lastName: contact.lastName };
+    }
     throw new Error("Fake API doesn't know the endpoint " + endpoint);
     
 }

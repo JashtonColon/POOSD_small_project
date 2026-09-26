@@ -65,7 +65,15 @@ function showContacts(contacts) {
             deleteContact(contact);
         });
 
-        actions.append(deleteButton);
+                const editButton = document.createElement('button');
+        editButton.type = 'button';
+        editButton.textContent = 'Edit';
+        editButton.setAttribute('aria-label', 'Edit ' + contact.firstName + ' ' + contact.lastName);
+        editButton.addEventListener('click', function () {
+            showEditForm(card, contact);
+        });
+
+        actions.append(editButton, deleteButton);
         card.append(info, actions);
         contactsList.append(card);
     });
@@ -133,4 +141,80 @@ async function deleteContact(contact) {
     } catch (err) {
         contactStatus.textContent = err.message;
     }
+}
+
+function showEditForm(card, contact) {
+    card.innerHTML = '';
+
+    const form = document.createElement('form');
+    form.className = 'edit-form';
+    form.noValidate = true;
+
+    const fields = [
+        { key: 'firstName', label: 'First name' },
+        { key: 'lastName',  label: 'Last name' },
+        { key: 'phone',     label: 'Phone' },
+        { key: 'email',     label: 'Email' }
+    ];
+
+    fields.forEach(function (field) {
+        const id = 'edit-' + field.key + '-' + contact.id;
+
+        const label = document.createElement('label');
+        label.htmlFor = id;
+        label.textContent = field.label;
+
+        const input = document.createElement('input');
+        input.id = id;
+        input.name = field.key;
+        input.value = contact[field.key];
+
+        form.append(label, input);
+    });
+
+    const saveButton = document.createElement('button');
+    saveButton.type = 'submit';
+    saveButton.textContent = 'Save';
+
+    const cancelButton = document.createElement('button');
+    cancelButton.type = 'button';
+    cancelButton.textContent = 'Cancel';
+    cancelButton.addEventListener('click', function () {
+        loadContacts();
+    });
+
+    form.append(saveButton, cancelButton);
+    card.append(form);
+
+    form.addEventListener('submit', async function (event) {
+        event.preventDefault();
+
+        const firstName = form.elements.firstName.value.trim();
+        const lastName = form.elements.lastName.value.trim();
+        const phone = form.elements.phone.value.trim();
+        const email = form.elements.email.value.trim();
+
+        if (!firstName || !lastName || !phone || !email) {
+            contactStatus.textContent = 'Please fill in every field.';
+            return;
+        }
+
+        try {
+            await apiRequest('PUT', 'contacts', {
+                userId: user.id,
+                contactId: contact.id,
+                firstName: firstName,
+                lastName: lastName,
+                phone: phone,
+                email: email
+            });
+
+            await loadContacts();
+            contactStatus.textContent = `${firstName} ${lastName} updated.`;
+        } catch (err) {
+            contactStatus.textContent = err.message;
+        }
+    });
+
+    form.elements.firstName.focus();
 }
