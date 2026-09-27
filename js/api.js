@@ -52,7 +52,7 @@ async function fakeApi(method, endpoint, payload) {
         throw new Error('Username or password is incorrect.');
     }
 
-    if(endpoint==='register'){
+    if(endpoint==='users'){
         if(payload.username==='Knight'){
             throw new Error("Username already taken.");
         }
