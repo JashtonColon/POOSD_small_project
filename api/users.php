@@ -9,7 +9,9 @@ $fields = ['firstName', 'lastName', 'username', 'password'];
 $in = getRequestInfo();
 $in = requireFields($in, $fields); //Middleware
 
-if (strlen($in['firstName']) > 50 || strlen($in['lastName']) > 50 || strlen($in['username']) > 50) {
+if (strlen($in['firstName']) > 50 || 
+    strlen($in['lastName']) > 50 || 
+    strlen($in['username']) > 50) {
     sendJson(["error" => "Names, username or password exceeds character limits"], 400);
 }
 

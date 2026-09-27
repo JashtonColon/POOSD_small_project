@@ -7,11 +7,202 @@ $in = getInput();
 $userId = requireUserId($in);
 
 switch ($method) {
-    case 'POST': create($conn, $in, $userId); break;
-    case 'GET': break;
-    case 'PUT': break;
-    case 'DELETE': break;
+    case 'POST': createContact($conn, $in, $userId); break;
+    case 'GET': searchContact($conn, $in, $userId); break;
+    case 'PUT': editContact($conn, $in, $userId); break;
+    case 'DELETE': deleteContact($conn, $in, $userId); break;
     default:
         header('Allow: GET, POST, PUT, DELETE');
         sendJson(["error" => "Method not allowed"], 405);
 }
+
+function createContact($conn, $in, $userId) {
+    $fields = ['firstName', 'lastName', 'phone', 'email'];
+    $contact = requireFields($in, $fields);
+
+    if (strlen($contact['firstName']) > 50 ||
+        strlen($contact['lastName']) > 50 ||
+        strlen($contact['phone']) > 50 ||
+        strlen($contact['email']) > 255) {
+            sendJson(["error" => "Email must be 255 characters or fewer, others 50"], 400);
+        }
+    
+    try {
+        $stmt = $conn->prepare(
+            "INSERT INTO Contacts (FirstName, LastName, Phone, Email, UserID)
+            VALUES (?, ?, ?, ?, ?)"
+        );
+        $stmt->bind_param( "ssssi", 
+            $contact['firstName'], 
+            $contact['lastName'], 
+            $contact['phone'], 
+            $contact['email'], 
+            $userId
+        );
+        $stmt->execute();
+    } catch (mysqli_sql_exception $e) {
+        if ($e->getCode() === 1452) { //1452 = foreign key failed
+            sendJson(["error" => "User not found"], 404);
+        }
+        sendJson(["error" => "Could not create contact"], 500);
+    }
+
+    sendJson([
+        "id" => $conn->insert_id,
+        "firstName" => $contact['firstName'],
+        "lastName" => $contact['lastName']
+    ], 201);
+}
+
+function editContact($conn, $in, $userId){
+    $fields = ['contactId', 'firstName', 'lastName', 'phone', 'email'];
+    $in = requireFields($in, $fields);
+
+    $contactId = (int)$in['contactId'];
+
+    //check if valid id
+    if($contactId <= 0){
+        sendJson(["error" => "A valid contactId is required"], 400);
+    }
+
+    //database length constraints
+    if(strlen($in['firstName']) > 50  ||
+       strlen($in['lastName']) > 50   ||
+       strlen($in['phone']) > 50      ||
+       strlen($in['email']) > 255
+    ){
+        sendJson(["error" => "Contact information exceeds character limits"], 400);
+    }
+
+
+    try{
+        //mySQL edit query
+        $stmt = $conn->prepare(
+            "UPDATE Contacts
+             SET FirstName = ?, LastName = ?, Phone = ?, Email = ?
+             WHERE ID = ? AND UserID = ?
+            "
+        );
+    
+        //put the input values into the query
+        $stmt->bind_param(
+            "ssssii", //data types of our input. string, string, string, string, int, int
+            $in['firstName'],
+            $in['lastName'],
+            $in['phone'],
+            $in['email'],
+            $contactId,
+            $userId
+        );
+
+        //execute query
+        $stmt->execute();
+
+        //if the query returns that 0 rows were changed, we investigate
+        if($stmt->affected_rows === 0){
+            $check = $conn->prepare(
+                "SELECT ID
+                FROM Contacts
+                WHERE ID = ? AND UserID = ?
+                "
+            );
+
+            $check->bind_param("ii", $contactId, $userId);
+            $check->execute();
+
+            //if this doesn't return a row, then the contact we are trying to update does not exist.
+            if(!$check->get_result()->fetch_assoc()){
+                sendJson(["error" => "Contact not found."], 404);
+            }
+
+
+        }
+    } catch(mysqli_sql_exception $e){
+        sendJson(["error" => "Could not edit contact."], 500);
+    }
+
+    //return the edited contact as a JSON
+    sendJson([
+        "id" => $contactId,
+        "firstName" => $in['firstName'],
+        "lastName" => $in['lastName'],
+        "phone" => $in['phone'],
+        "email" => $in['email']
+    ]);
+}
+
+function deleteContact($conn, $in, $userId) {
+    $fields = ['contactId'];
+    $in = requireFields($in, $fields);
+
+    $contactId = (int)$in['contactId'];
+
+    if ($contactId <= 0) {
+        sendJson(["error" => "A valid contactID is required"], 400);
+    }
+
+    try {
+        $stmt = $conn->prepare(
+            "DELETE FROM Contacts WHERE ID = ? AND UserID = ?"
+        );
+
+        $stmt->bind_param("ii", $contactId, $userId);
+        $stmt->execute();
+    } catch (mysqli_sql_exception $e) {
+        sendJson(["error" => "Could not delete contact"], 500);
+    }
+
+    if ($stmt->affected_rows === 0) { //None deleted == Contact ID not found
+        sendJson(["error" => "Contact not found"], 404);
+    }
+
+    sendJson(["contactId" => $contactId]);
+}
+
+function searchContact($conn, $in, $userId){
+    //get and clean input
+    $search = trim((string)($in['search'] ?? ""));
+    $pattern = "%" . addcslashes($search, '%_\\') . "%"; //%input% -> if string is "jo" it can return something like "john"
+
+    try{ //query
+        $stmt = $conn->prepare(
+            "SELECT ID, FirstName, LastName, Phone, Email, DateCreated
+            FROM Contacts
+            WHERE UserID = ? AND (FirstName LIKE ? OR LastName LIKE ?)
+            ORDER BY LastName, FirstName
+            "
+        );
+
+        $stmt->bind_param( //fill in query values
+            "iss",
+            $userId,
+            $pattern,
+            $pattern
+        );
+
+        //execute query
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        $results = [];
+
+        //prepare our results array that will we send over
+        while($row = $result->fetch_assoc()){
+            $results[] = [
+                "id" => (int)$row["ID"],
+                "firstName" => $row["FirstName"],
+                "lastName" => $row["LastName"],
+                "phone" => $row["Phone"],
+                "email" => $row["Email"],
+                "dateCreated" => $row["DateCreated"]
+            ];
+        }
+
+        
+
+    } catch(mysqli_sql_exception $e){
+        sendJson(["error" => "Could not search contacts"], 500);
+    }
+    sendJson(["results" => $results]);
+}
+
