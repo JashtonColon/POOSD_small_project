@@ -1,5 +1,5 @@
 const API_BASE = '/api';
-const USE_FAKE_DATA = true;
+const USE_FAKE_DATA = false;
 
 async function apiRequest(method, endpoint, payload) {
 
