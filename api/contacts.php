@@ -1,6 +1,6 @@
 <?php
-require_once __DIR__ . '/../db.php';
-require_once __DIR__ . '/../helpers.php';
+require_once __DIR__ . '/db.php';
+require_once __DIR__ . '/helpers.php';
 
 $method = $_SERVER['REQUEST_METHOD'];
 $in = getInput();
