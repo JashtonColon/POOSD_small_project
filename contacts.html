@@ -6,7 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <title>Contacts - Knight Contacts Manager</title>
-    <link rel="stylesheet" href="styles.css">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&display=swap">
+    <link rel="stylesheet" href="css/styles.css">
 </head>
 
 <body>
@@ -14,6 +15,10 @@
     <main>
 
         <h1>Knights Contact Manager</h1>
+                <div class="user-bar">
+            <p id="welcome"></p>
+            <button type="button" id="signout-button">Sign out</button>
+        </div>
 
 
         <!-- Search -->
@@ -21,17 +26,39 @@
 
             <h2>Search Contacts</h2>
 
-            <input
-                id="search-input"
-                type="text"
-                placeholder="Search by name..."
-            >
-
-            <button type="button" id="search-button">
-                Search
-            </button>
+                        <form id="search-form" role="search">
+                <input id="search-input" type="search" placeholder="Search by name..." aria-label="Search contacts">
+                <button type="submit" id="search-button">Search</button>
+            </form>
 
         </section>
+
+         <!-- Contact List -->
+        <section id="contacts-section">
+
+            <h2>Contacts</h2>
+            <!-- Status messages -->
+        <p id="contact-status" role="status" aria-live="polite"></p>
+	    <div id="contacts-list">
+
+        	<div class="contact-card">
+
+        	    <div class="contact-info">
+            	        <h3>John Smith</h3>
+            	        <p>Phone: 407-555-1234</p>
+            	        <p>Email: john@example.com</p>
+            	    </div>
+
+        	    <div class="contact-actions">
+                        <button type="button">Edit</button>
+                        <button type="button">Delete</button>
+        	    </div>
+
+    	        </div>
+
+	    </div>
+        </section>
+
 
 
         <!-- Add Contact -->
@@ -39,8 +66,7 @@
 
             <h2>Add Contact</h2>
 
-            <form id="add-contact-form">
-
+            <form id="add-contact-form" novalidate>
                 <div>
                     <label for="contact-first-name">First Name</label>
                     <input
@@ -78,44 +104,20 @@
                 <button type="submit">
                     Add Contact
                 </button>
-
+                                <p id="add-status" role="status" aria-live="polite"></p>
             </form>
 
         </section>
 
 
-        <!-- Contact List -->
-        <section id="contacts-section">
+       
 
-            <h2>Contacts</h2>
-
-	    <div id="contacts-list">
-
-        	<div class="contact-card">
-
-        	    <div class="contact-info">
-            	        <h3>John Smith</h3>
-            	        <p>Phone: 407-555-1234</p>
-            	        <p>Email: john@example.com</p>
-            	    </div>
-
-        	    <div class="contact-actions">
-                        <button type="button">Edit</button>
-                        <button type="button">Delete</button>
-        	    </div>
-
-    	        </div>
-
-	    </div>
-        </section>
-
-
-        <!-- Status messages -->
-        <p id="contact-status" role="status" aria-live="polite"></p>
+        
 
 
     </main>
-
+        <script src="js/api.js"></script>
+        <script src="js/contacts.js"></script>
 </body>
 
 </html>
