@@ -168,14 +168,20 @@ function searchContact($conn, $in, $userId){
         $stmt = $conn->prepare(
             "SELECT ID, FirstName, LastName, Phone, Email, DateCreated
             FROM Contacts
-            WHERE UserID = ? AND (FirstName LIKE ? OR LastName LIKE ?)
+            WHERE UserID = ? 
+            AND (FirstName LIKE ? OR LastName LIKE ?
+                 OR CONCAT(FirstName, ' ', LastName) LIKE ?
+                 OR CONCAT(LastName, ' ', FirstName) LIKE ?
+                )
             ORDER BY LastName, FirstName
             "
         );
 
         $stmt->bind_param( //fill in query values
-            "iss",
+            "issss",
             $userId,
+            $pattern,
+            $pattern,
             $pattern,
             $pattern
         );
